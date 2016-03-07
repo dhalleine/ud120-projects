@@ -13,6 +13,7 @@ POLYNOMIAL_ORDER_MAX = 20
 def display_data(data):
   """ Display the data in a graph """
   plt.scatter(x=data['X'], y=data['Y'], c='b')
+  plt.ylim([0, 25])
   plt.show()
 
 def display_prediction(model, data, order):
@@ -28,7 +29,7 @@ def display_prediction(model, data, order):
   plt.show()
 
 def rss(v1, v2):
-  return sum((v1 - v2) ** 2)
+  return sum((v1 - v2) ** 2) / len(v1)
 
 
 # Generate a random dataset
@@ -67,6 +68,7 @@ for order in range(1, POLYNOMIAL_ORDER_MAX):
 # Display the accuracy and the loss given the order, to see the underfit and overfit regions
 plt.plot(metrics[1:,0], metrics[1:,1], c='g')
 plt.plot(metrics[1:,0], metrics[1:,2], c='r')
+plt.yscale('log')
 plt.show()
 
 
