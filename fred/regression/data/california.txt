@@ -1,0 +1,13 @@
+@relation california
+@attribute Longitude real[-124.35,-114.31]
+@attribute Latitude real[32.54,41.95]
+@attribute HousingMedianAge real[1,52]
+@attribute TotalRooms real[2,39320]
+@attribute TotalBedrooms real[1,6445]
+@attribute Population real[3,35682]
+@attribute Households real[1,6082]
+@attribute MedianIncome real[0.4999,15.0001]
+@attribute MedianHouseValue real[14999,500001] 
+@inputs Longitude, Latitude, HousingMedianAge, TotalRooms, TotalBedrooms, Population, Households, MedianIncome
+@outputs MedianHouseValue
+@data
