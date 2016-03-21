@@ -1,6 +1,6 @@
-#!/usr/bin/python 
+#!/usr/bin/python
 
-""" 
+"""
     Skeleton code for k-means clustering mini-project.
 """
 
@@ -40,33 +40,62 @@ def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature
 
 ### load in the dict of dicts containing all the data on each person in the dataset
 data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r") )
-### there's an outlier--remove it! 
+### there's an outlier--remove it!
 data_dict.pop("TOTAL", 0)
 
 
-### the input features we want to use 
-### can be any key in the person-level dictionary (salary, director_fees, etc.) 
+### the input features we want to use
+### can be any key in the person-level dictionary (salary, director_fees, etc.)
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
 poi  = "poi"
-features_list = [poi, feature_1, feature_2]
+total_payments = "total_payments"
+features_list = [poi, feature_1, feature_2, total_payments]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
 
 ### in the "clustering with 3 features" part of the mini-project,
-### you'll want to change this line to 
+### you'll want to change this line to
 ### for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
-for f1, f2 in finance_features:
+for f1, f2, _ in finance_features:
     plt.scatter( f1, f2 )
 plt.show()
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
 
+import math
+from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=2)
+kmeans.fit(data)
+pred = kmeans.predict(data)
 
+exercised_stock_options_min = sys.maxint
+exercised_stock_options_max = -sys.maxint - 1
+salary_min = sys.maxint
+salary_max = -sys.maxint - 1
 
+for person in data_dict:
+  dict_person = data_dict[person]
+  eso = dict_person['exercised_stock_options']
+  if eso == eso and not math.isnan(float(eso)):
+    if eso < exercised_stock_options_min:
+      exercised_stock_options_min = eso
+    if eso > exercised_stock_options_max:
+      exercised_stock_options_max = eso
+  salary = dict_person['salary']
+  if salary == salary and not math.isnan(float(salary)):
+    if salary < salary_min:
+      salary_min = salary
+    if salary > salary_max:
+      salary_max = salary
+
+print "Exercised Stock Options min = %d" % exercised_stock_options_min
+print "Exercised Stock Options max = %d" % exercised_stock_options_max
+print "Salary min = %d" % salary_min
+print "Salary max = %d" % salary_max
 
 ### rename the "name" parameter when you change the number of features
 ### so that the figure gets saved to a different file
